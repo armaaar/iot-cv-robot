@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ar" dir="ltr">
+	<head>
+		<title>
+			Graduation Project
+		</title>
+
+		<link rel="shortcut icon" type="imagex-icon" href="{{ url_for("static", filename="favicon.ico") }}" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" />
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+			integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+		<link rel="stylesheet" href="{{ url_for("static", filename="styles.css") }}" />
+	</head>
+	<body class="">
+
+    <div class="conatiner">
+      <div class="row">
+        <div class="col-xs-12">
+          <h1>Graduation Project</h1>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 col-md-6">
+            <img src="{{ url_for('video_feed') }}">
+        </div>
+        <div class="col-sm-12 col-md-6">
+            <table>
+              <tr>
+                <td rowspan="2">Left</td>
+                <td>Up</td>
+                <td rowspan="2">right</td>
+              </tr>
+              <tr>
+                <td>Down</td>
+              </tr>
+            </table>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script type="text/javascript" src="{{ url_for("static", filename="scripts.js") }}"></script>
+	</body>
+</html>
