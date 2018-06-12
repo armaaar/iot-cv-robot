@@ -1,0 +1,103 @@
+body {
+    min-height: 100vh;
+}
+img {
+    max-width: 100%;
+}
+.section {
+    position: relative;
+    margin-bottom: 20px;
+}
+.stream-container {
+    text-align: center;
+}
+.stream-container img {
+    width: 100%;
+    height: 100%;
+    border:1px solid #16191d;
+    border-radius: 4px;
+}
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
+    border: 0;
+    padding: 5px
+}
+.arrows {
+    table-layout: fixed;
+    margin-bottom: 0
+}
+.arrows tr:first-child td {
+ padding-top: 0;
+}
+.arrows tr:last-child td {
+    padding-bottom: 0;
+}
+.arrows .sides {
+    padding-bottom: 0
+}
+.arrows .sides.left-side {
+    padding-left: 0;
+}
+.arrows .sides.right-side {
+    padding-right: 0;
+}
+.arrows .btn {
+    width: 100%;
+    background: #21252b;
+    color: white;
+    line-height: 50px;
+    padding: 0;
+    font-size: 2em;
+    border: 0;
+}
+.arrows .btn:hover, .arrows .btn:focus, .arrows .btn.pushed {
+    background: #16191d;
+}
+.arrows .sides .btn {
+    line-height: 110px;
+}
+.console {
+    background: #16191d;
+    color: #ffffff;
+    width: 100%;
+    height: 290px;
+    border-radius: 4px;
+    padding: 10px;
+}
+.console pre {
+    background-color: inherit;
+    color: inherit;
+    border: 0;
+    border-radius: 0;
+    padding: 0;
+    padding-right: 5px;
+    margin: 0;
+    width: 100%;
+    max-height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    white-space: pre-wrap;       /* css-3 */
+    white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+    white-space: -pre-wrap;      /* Opera 4-6 */
+    white-space: -o-pre-wrap;    /* Opera 7 */
+    word-wrap: break-word;
+}
+.console pre::-webkit-scrollbar {
+    background-color: #282c34;
+    border-radius: 2px;
+    width: 6px;
+}
+.console pre::-webkit-scrollbar-thumb{
+    background-color: #06090d;
+    border-radius: 2px;
+}
+@media(min-width: 991px) {
+    .console-wrapper.section {
+        top: -130px;
+    }
+    .table-wrapper.section {
+        bottom: -310px;
+    }
+    .stream-container {
+        height: 420px;
+    }
+}

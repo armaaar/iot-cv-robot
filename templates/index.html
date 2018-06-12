@@ -1,44 +1,77 @@
 <!DOCTYPE html>
 <html lang="ar" dir="ltr">
-	<head>
-		<title>
-			Graduation Project
-		</title>
 
-		<link rel="shortcut icon" type="imagex-icon" href="{{ url_for("static", filename="favicon.ico") }}" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" />
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-			integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-		<link rel="stylesheet" href="{{ url_for("static", filename="styles.css") }}" />
-	</head>
-	<body class="">
+<head>
+  <title>
+    Graduation Project
+  </title>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <div class="conatiner">
-      <div class="row">
-        <div class="col-xs-12">
-          <h1>Graduation Project</h1>
-        </div>
+  <link rel="shortcut icon" type="imagex-icon" href="{{ url_for("static", filename="favicon.ico") }}" />
+  <link rel="stylesheet" href="{{ url_for("static", filename="libs/normalize.min.css") }}" />
+  <link rel="stylesheet" href="{{ url_for("static", filename="libs/bootstrap.min.css") }}" />
+
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp"
+    crossorigin="anonymous">
+  <link rel="stylesheet" href="{{ url_for("static", filename="styles.css") }}" />
+</head>
+
+<body class="">
+
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12 section">
+        <h1>Graduation Project</h1>
       </div>
-      <div class="row">
-        <div class="col-sm-12 col-md-6">
-            <img src="{{ url_for('video_feed') }}">
-        </div>
-        <div class="col-sm-12 col-md-6">
-            <table>
+    </div>
+    <div class="row">
+      <div class="col-sm-12 col-md-6 stream-container section">
+        <img src="{{ url_for('video_feed') }}">
+      </div>
+      <div class="col-sm-12 col-md-6">
+        <div class="row">
+          <div class="col-xs-12 section table-wrapper">
+            <table class="table arrows">
               <tr>
-                <td rowspan="2">Left</td>
-                <td>Up</td>
-                <td rowspan="2">right</td>
+                <td class="sides left-side" rowspan="2">
+                  <span class="btn" id="left-arrow">
+                    <i class="fas fa-angle-left"></i>
+                  </span>
+                </td>
+                <td>
+                  <span class="btn" id="up-arrow">
+                    <i class="fas fa-angle-up"></i>
+                  </span>
+                </td>
+                <td class="sides right-side" rowspan="2">
+                  <span class="btn" id="right-arrow">
+                    <i class="fas fa-angle-right"></i>
+                  </span>
+                </td>
               </tr>
               <tr>
-                <td>Down</td>
+                <td>
+                  <span class="btn" id="down-arrow">
+                    <i class="fas fa-angle-down"></i>
+                  </span>
+                </td>
               </tr>
             </table>
+          </div>
+          <div class="col-xs-12 section console-wrapper">
+            <div class="console">
+              <pre></pre>
+            </div>
+          </div>
         </div>
       </div>
     </div>
+  </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-		<script type="text/javascript" src="{{ url_for("static", filename="scripts.js") }}"></script>
-	</body>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script type="text/javascript" src="{{ url_for("static", filename="scripts.js") }}"></script>
+</body>
+
 </html>
