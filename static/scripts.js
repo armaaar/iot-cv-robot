@@ -16,8 +16,11 @@ pressedArrows = {
     left: 0,
     up: 0,
     right: 0,
-    left: 0
+    down: 0
 };
+// states
+baseURL= window.location.protocol + "//" + window.location.host + "/";
+
 /* Bind functions to events when document is ready */
 $( document ).ready(function() {
     // Check if stream kicked off
@@ -29,7 +32,10 @@ $( document ).ready(function() {
         right: arrowKeyBehavior("right"),
         down: arrowKeyBehavior("down")
     });
-    
+    window.setInterval(function(){
+        checkStream();
+        synchronize();
+    }, 1000);
 });
 
 /* Global Functions */
@@ -46,35 +52,87 @@ function writeToConsole(textToWrite) {
     return true;
 }
 
-function checkStream() {
-    var img = new Image(),
-        streamURL = $(selectors.stream).attr('src');
-    img.onload = function() {
-        writeToConsole('Stream is Ready!');
+checkStream = (function(){
+    var streamIsUp = false,
+        img = new Image(),
+        streamURL = $(selectors.stream).attr('data-src');
+
+        img.onload = function() {
+            if(!streamIsUp){
+                streamIsUp = true;
+                $(selectors.stream).attr('src', streamURL);
+                writeToConsole('Stream is Ready!');
+            }
+        }
+        img.onerror = function(){
+            if(streamIsUp){
+                streamIsUp = false;
+                writeToConsole('Stream has Error!');
+            }
+        }
+    return function() {
+        img.src = streamURL;
+        return true;
     }
-    img.onerror = function(){
-        writeToConsole('Stream has Error!');
-    }
-    img.src = streamURL;
-}
+})();
+
 function arrowKeyBehavior(arrow) {
     return {
         press: function() {
             if(!pressedArrows[arrow]) {
                 pressedArrows[arrow] = 1;
                 $(selectors.arrows[arrow]).addClass("pushed");
-                writeToConsole("key `"+arrow+"` pressed!");
             }
         },
         release: function() {
             if(pressedArrows[arrow]) {
                 pressedArrows[arrow] = 0;
                 $(selectors.arrows[arrow]).removeClass("pushed");
-                writeToConsole("key `"+arrow+"` released!");
             }
         }
     };
 }
+// This functions sends current states to the server and ask for Robot state to display on console
+
+synchronize = (function () {
+    syncResponse = {
+        waiting: false,
+        hadError: false,
+        state: ''
+    };
+
+    return function(){
+        if(syncResponse.waiting) { return }
+
+        syncResponse.waiting = true;
+        $.ajax({
+        method: "POST",
+        url: baseURL + "move",
+        data: pressedArrows
+        })
+        .done(function(result) {
+            syncResponse.hadError = false;
+            console.log(result)
+            if(syncResponse.state != result.state) {
+                syncResponse.state = result.state;
+                writeToConsole(result.state);
+            }
+        })
+        .fail(function(requestObject, error, errorThrown) {
+            if(!syncResponse.hadError) {
+                syncResponse.hadError = true;
+                writeToConsole("An error happened! check browser console for more info");
+                console.log(requestObject);
+                console.log(error);
+                console.log(errorThrown);
+            }
+        })
+        .always(function() {
+            syncResponse.waiting = false;
+        });
+    }
+})()
+
 function arrowKeysBinding(callback) {
     $(document).keydown(function(e) {
         switch(e.which) {

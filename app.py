@@ -1,7 +1,8 @@
 #!/usr/bin/env python
 from importlib import import_module
+import json
 import os
-from flask import Flask, render_template, Response, request, url_for
+from flask import Flask, render_template, Response, request, url_for, jsonify, g
 from camera.camera_opencv import Camera
 # Raspberry Pi camera module (requires picamera package)
 # from camera.camera_pi import Camera
@@ -13,8 +14,6 @@ app = Flask(__name__)
 def index():
     """Video streaming home page."""
     return render_template('index.html')
-
-
 
 def gen(camera):
     """Video streaming generator function."""
@@ -30,6 +29,34 @@ def video_feed():
     return Response(gen(Camera()),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
+@app.route('/move', methods=['POST'])
+def move_robot():
+    state = ''
+    
+    move = {
+        'left': int(request.form['left']),
+        'up': int(request.form['up']),
+        'right': int(request.form['right']),
+        'down': int(request.form['down'])
+    }
+    if move['up'] and move['down']:
+        move['up']=0
+        move['down']=0
+
+    if move['left'] and move['right']:
+        move['left']=0
+        move['right']=0
+
+    # DO SOMETHING HERE
+
+    if move['up'] or move['down'] or move['left'] or move['right']:
+        state="Moving!"
+    else:
+        state="Stopped!"
+
+    return jsonify({
+        'state': state
+    })
 
 if __name__ == '__main__':
     app.debug = True
