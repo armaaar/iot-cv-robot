@@ -5,4 +5,4 @@
 - Go to project root directory through your terminal
 - Install pip requirements by runing: `$ pip install -r pip-requirements.txt`
 - Run: `python app.py`
-- Open your browser and got to `http://localhost:5000/`
+- Open your browser and go to `http://localhost:5000/`
