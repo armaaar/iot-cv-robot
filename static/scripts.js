@@ -68,7 +68,6 @@ $( document ).ready(function() {
                     $(selectors.arrows.enter).addClass("pushed");
                     recognize();
                 }
-                
             },
             release: function() {
                 recognizeKeyPressed = false;

@@ -47,12 +47,34 @@ def move_robot():
         move['left']=0
         move['right']=0
 
-    # DO SOMETHING HERE
+    # Move the car
+    if move['up'] and move['right']:
+        state="Moving: up-right"
 
-    if move['up'] or move['down'] or move['left'] or move['right']:
-        state="Moving!"
+    elif move['up'] and move['left']:
+        state="Moving: up-left"
+
+    elif move['down'] and move['right']:
+        state="Moving: down-right"
+
+    elif move['down'] and move['left']:
+        state="Moving: down-left"
+
+    elif move['up']:
+        state="Moving: up"
+
+    elif move['down']:
+        state="Moving: down"
+
+    elif move['left']:
+        state="Moving: left"
+
+    elif move['right']:
+        state="Moving: right"
+
     else:
-        state="Stopped!"
+        state="Stopped"
+
 
     return jsonify({
         'state': state
