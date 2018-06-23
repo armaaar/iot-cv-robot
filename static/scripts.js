@@ -1,3 +1,31 @@
+/* Global Functions */
+Object.compare = function (obj1, obj2) {
+	//Loop through properties in object 1
+	for (var p in obj1) {
+		//Check property exists on both objects
+		if (obj1.hasOwnProperty(p) !== obj2.hasOwnProperty(p)) return false;
+ 
+		switch (typeof (obj1[p])) {
+			//Deep compare objects
+			case 'object':
+				if (!Object.compare(obj1[p], obj2[p])) return false;
+				break;
+			//Compare function code
+			case 'function':
+				if (typeof (obj2[p]) == 'undefined' || (p != 'compare' && obj1[p].toString() != obj2[p].toString())) return false;
+				break;
+			//Compare values
+			default:
+				if (obj1[p] != obj2[p]) return false;
+		}
+	}
+ 
+	//Check object 2 for any extra properties
+	for (var p in obj2) {
+		if (typeof (obj1[p]) == 'undefined') return false;
+	}
+	return true;
+};
 /* Global Variables */
 // Elements selectors
 selectors = {
@@ -82,12 +110,14 @@ function arrowKeyBehavior(arrow) {
             if(!pressedArrows[arrow]) {
                 pressedArrows[arrow] = 1;
                 $(selectors.arrows[arrow]).addClass("pushed");
+                synchronize();
             }
         },
         release: function() {
             if(pressedArrows[arrow]) {
                 pressedArrows[arrow] = 0;
                 $(selectors.arrows[arrow]).removeClass("pushed");
+                synchronize();
             }
         }
     };
@@ -95,24 +125,35 @@ function arrowKeyBehavior(arrow) {
 // This functions sends current states to the server and ask for Robot state to display on console
 
 synchronize = (function () {
-    syncResponse = {
+    var syncResponse = {
         waiting: false,
         hadError: false,
         state: ''
     };
+    var moveInstructions = {};
+    var oldmoveInstructions = {};
+    var secondsCounter = 0;
 
     return function(){
         if(syncResponse.waiting) { return }
+
+        secondsCounter++;
+        moveInstructions = calculateMoveInstructions();
+        if(secondsCounter < 4 && Object.compare(oldmoveInstructions, moveInstructions)) {return}
+
+        oldmoveInstructions = jQuery.extend({}, moveInstructions);
+        if(secondsCounter <= 4) {
+            secondsCounter=0;
+        }
 
         syncResponse.waiting = true;
         $.ajax({
         method: "POST",
         url: baseURL + "move",
-        data: pressedArrows
+        data: moveInstructions
         })
         .done(function(result) {
             syncResponse.hadError = false;
-            console.log(result)
             if(syncResponse.state != result.state) {
                 syncResponse.state = result.state;
                 writeToConsole(result.state);
@@ -131,7 +172,20 @@ synchronize = (function () {
             syncResponse.waiting = false;
         });
     }
-})()
+})();
+
+function calculateMoveInstructions() {
+    var moveInstructions = jQuery.extend({}, pressedArrows);
+    if(moveInstructions.up && moveInstructions.down) {
+        moveInstructions.up = 0;
+        moveInstructions.down = 0;
+    }
+    if(moveInstructions.left && moveInstructions.right) {
+        moveInstructions.left = 0;
+        moveInstructions.right = 0;
+    }
+    return moveInstructions;
+}
 
 function arrowKeysBinding(callback) {
     $(document).keydown(function(e) {
