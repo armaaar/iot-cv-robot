@@ -58,6 +58,17 @@ def move_robot():
         'state': state
     })
 
+@app.route('/recognize', methods=['POST'])
+def recognize_picture():
+    state = 'Recognizing...'
+    
+
+    # DO SOMETHING HERE
+
+    return jsonify({
+        'state': state
+    })
+
 if __name__ == '__main__':
     app.debug = True
     app.run(host='0.0.0.0', threaded=True, port=5000)

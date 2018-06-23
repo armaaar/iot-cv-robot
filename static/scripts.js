@@ -37,6 +37,7 @@ selectors = {
         up: ".arrows #up-arrow",
         right: ".arrows #right-arrow",
         down: ".arrows #down-arrow",
+        enter: ".arrows #recognize"
     }
 };
 // pressed buttons
@@ -46,6 +47,7 @@ pressedArrows = {
     right: 0,
     down: 0
 };
+recognizeKeyPressed = false;
 // states
 baseURL= window.location.protocol + "//" + window.location.host + "/";
 
@@ -58,7 +60,21 @@ $( document ).ready(function() {
         left: arrowKeyBehavior("left"),
         up: arrowKeyBehavior("up"),
         right: arrowKeyBehavior("right"),
-        down: arrowKeyBehavior("down")
+        down: arrowKeyBehavior("down"),
+        enter: {
+            press: function() {
+                if(!recognizeKeyPressed) {
+                    recognizeKeyPressed = true;
+                    $(selectors.arrows.enter).addClass("pushed");
+                    recognize();
+                }
+                
+            },
+            release: function() {
+                recognizeKeyPressed = false;
+                $(selectors.arrows.enter).removeClass("pushed");
+            }
+        }
     });
     window.setInterval(function(){
         checkStream();
@@ -174,6 +190,35 @@ synchronize = (function () {
     }
 })();
 
+recognize = (function () {
+    var recognizeResponse = {
+        waiting: false
+    };
+
+    return function(){
+        if(recognizeResponse.waiting) { return }
+
+        recognizeResponse.waiting = true;
+        $.ajax({
+        method: "POST",
+        url: baseURL + "recognize"
+        })
+        .done(function(result) {
+            console.log(result);
+            writeToConsole(result.state);
+        })
+        .fail(function(requestObject, error, errorThrown) {
+            writeToConsole("An error while recognizing happened! check browser console for more info");
+            console.log(requestObject);
+            console.log(error);
+            console.log(errorThrown);
+        })
+        .always(function() {
+            recognizeResponse.waiting = false;
+        });
+    }
+})();
+
 function calculateMoveInstructions() {
     var moveInstructions = jQuery.extend({}, pressedArrows);
     if(moveInstructions.up && moveInstructions.down) {
@@ -190,6 +235,9 @@ function calculateMoveInstructions() {
 function arrowKeysBinding(callback) {
     $(document).keydown(function(e) {
         switch(e.which) {
+            case 13: // enter
+                callback.enter.press();
+                break;
             case 37: // left
                 callback.left.press();
                 break;
@@ -213,6 +261,9 @@ function arrowKeysBinding(callback) {
 
     $(document).keyup(function(e) {
         switch(e.which) {
+            case 13: // enter
+                callback.enter.release();
+                break;
             case 37: // left
                 callback.left.release();
                 break;
