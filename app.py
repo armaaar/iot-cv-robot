@@ -3,10 +3,13 @@ from importlib import import_module
 import json
 import os
 from flask import Flask, render_template, Response, request, url_for, jsonify, g
-from camera.camera_opencv import Camera
+# from camera.camera_opencv import Camera
 # Raspberry Pi camera module (requires picamera package)
-# from camera.camera_pi import Camera
+from camera.camera_pi import Camera
+import smbus
+import time
 
+bus = smbus.SMBus(1)
 app = Flask(__name__)
 
 
@@ -62,18 +65,23 @@ def move_robot():
 
     elif move['up']:
         state="Moving: up"
+        bus.write_byte_data(0x21, 0x00, 8)
 
     elif move['down']:
         state="Moving: down"
+        bus.write_byte_data(0x21, 0x00, 2)
 
     elif move['left']:
         state="Moving: left"
+        bus.write_byte_data(0x21, 0x00, 4)
 
     elif move['right']:
         state="Moving: right"
+        bus.write_byte_data(0x21, 0x00, 6)
 
     else:
         state="Stopped"
+        bus.write_byte_data(0x21, 0x00, 5)
 
 
     return jsonify({

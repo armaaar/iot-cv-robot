@@ -31,6 +31,7 @@ Object.compare = function (obj1, obj2) {
 selectors = {
     console: ".console pre",
     stream: ".stream-container img",
+    errorContainer: "#error_container",
     arrows: {
         general: ".arrows .btn",
         left: ".arrows #left-arrow",
@@ -178,6 +179,7 @@ synchronize = (function () {
             if(!syncResponse.hadError) {
                 syncResponse.hadError = true;
                 writeToConsole("An error happened! check browser console for more info");
+                $(errorContainer).html(requestObject.responseText)
                 console.log(requestObject);
                 console.log(error);
                 console.log(errorThrown);

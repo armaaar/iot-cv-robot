@@ -9,3 +9,4 @@ numpy==1.13.1
 opencv-python==3.2.0.8
 #for pi cam
 picamera==1.13
+smbus>=0.0
