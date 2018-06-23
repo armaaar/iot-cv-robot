@@ -55,7 +55,7 @@ img {
 .arrows .sides .btn {
     line-height: 110px;
 }
-.console {
+.console-wrapper .console {
     background: #16191d;
     color: #ffffff;
     width: 100%;
@@ -63,7 +63,7 @@ img {
     border-radius: 4px;
     padding: 10px;
 }
-.console pre {
+.console-wrapper .console pre {
     background-color: inherit;
     color: inherit;
     border: 0;
@@ -81,12 +81,12 @@ img {
     white-space: -o-pre-wrap;    /* Opera 7 */
     word-wrap: break-word;
 }
-.console pre::-webkit-scrollbar {
+.console-wrapper .console pre::-webkit-scrollbar {
     background-color: #282c34;
     border-radius: 2px;
     width: 6px;
 }
-.console pre::-webkit-scrollbar-thumb{
+.console-wrapper .console pre::-webkit-scrollbar-thumb{
     background-color: #06090d;
     border-radius: 2px;
 }
