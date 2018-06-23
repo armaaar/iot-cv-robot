@@ -179,7 +179,7 @@ synchronize = (function () {
             if(!syncResponse.hadError) {
                 syncResponse.hadError = true;
                 writeToConsole("An error happened! check browser console for more info");
-                $(errorContainer).html(requestObject.responseText)
+                $(selectors.errorContainer).html(requestObject.responseText);
                 console.log(requestObject);
                 console.log(error);
                 console.log(errorThrown);
@@ -210,6 +210,7 @@ recognize = (function () {
         })
         .fail(function(requestObject, error, errorThrown) {
             writeToConsole("An error while recognizing happened! check browser console for more info");
+            $(selectors.errorContainer).html(requestObject.responseText);
             console.log(requestObject);
             console.log(error);
             console.log(errorThrown);
