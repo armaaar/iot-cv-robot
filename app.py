@@ -53,15 +53,19 @@ def move_robot():
     # Move the car
     if move['up'] and move['right']:
         state="Moving: up-right"
+        bus.write_byte_data(0x21, 0x00, 9)
 
     elif move['up'] and move['left']:
         state="Moving: up-left"
+        bus.write_byte_data(0x21, 0x00, 7)
 
     elif move['down'] and move['right']:
         state="Moving: down-right"
+        bus.write_byte_data(0x21, 0x00, 3)
 
     elif move['down'] and move['left']:
         state="Moving: down-left"
+        bus.write_byte_data(0x21, 0x00, 1)
 
     elif move['up']:
         state="Moving: up"
