@@ -7,6 +7,9 @@
 /*I2c initialization*/
 void TWI_init(void)
 {
+	////////////////////////////Edit///////////////////
+	PORTC |= (1 << PC0);
+	PORTC |= (1 << PC1);
 #if TWI_SPEED == 100
 	TWBR=32;   // to set the speed 100kb/s  ,,, Speed 400khz TWBR=2;
 
@@ -22,7 +25,8 @@ void TWI_init(void)
 /*I2c initialization*/
 void TWI_init_slave(unsigned char address)
 {
-
+	TWBR = 32;    ///////////////////////Edit
+	TWSR = 0;	 ///////////////////////Edit
 	TWCR = (1 << TWEN); // enable the TWI peripheral
 	TWAR = ( (address << 1) & (0xfe)); // address of the slave
 	TWCR = (1 << TWINT) | (1 << TWEN) | (1 << TWEA);
@@ -34,8 +38,9 @@ void TWI_init_slave(unsigned char address)
 unsigned char TWI_recieve()
 {
 
-	TWCR = (1 << TWINT) | (1 << TWEN); // enable the TWI peripheral
+	TWCR = (1 << TWINT) | (1 << TWEN) | (1 << TWEA); // enable the TWI peripheral
 	while(!(TWCR & (1<<TWINT)) );
+	//while(((!(TWCR & (1<<TWINT))))&&((((TWSR&0xf8)!=0x80))||((TWSR&0xf8)!=0x50)));
 	return TWDR;
 
 }
@@ -46,7 +51,7 @@ void TWI_listen()
 {
 
 	while(!(TWCR & (1<<TWINT)) );
-
+	//while(((!(TWCR & (1<<TWINT))))&&((((TWSR&0xf8)!=0x80))||((TWSR&0xf8)!=0x50)));
 }
 
 
@@ -64,7 +69,7 @@ void TWI_send_DeviceAddress_Read(unsigned char address)
 {
 	TWDR=((address<<1)|(0x01));//Address+ReadBit
 	TWCR=(1<<TWEN)|(1<<TWINT)|(1<<TWEA);
-		while((!(TWCR & (1<<TWINT)))&& ((((TWSR&0xf8)!=0x40))));
+	while((!(TWCR & (1<<TWINT)))&& ((((TWSR&0xf8)!=0x40))));
 
 }
 
