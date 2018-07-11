@@ -197,8 +197,11 @@ recognize = (function () {
     };
 
     return function(){
-        if(recognizeResponse.waiting) { return }
-
+        if(recognizeResponse.waiting) { 
+            writeToConsole("The robot is already recognizing an object");
+            return;
+        }
+        writeToConsole("Recognizing...");
         recognizeResponse.waiting = true;
         $.ajax({
         method: "POST",

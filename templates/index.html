@@ -13,6 +13,8 @@
   <link rel="stylesheet" href="{{ url_for("static", filename="libs/normalize.min.css") }}" />
   <link rel="stylesheet" href="{{ url_for("static", filename="libs/bootstrap.min.css") }}" />
 
+  <link rel="stylesheet" href="{{ url_for("static", filename="libs/font-awesome-all.css") }}">
+
   <link rel="stylesheet" href="{{ url_for("static", filename="styles.css") }}" />
 </head>
 
@@ -35,29 +37,29 @@
               <tr>
                 <td class="sides left-side" rowspan="2">
                   <span class="btn" id="left-arrow" data-arrow="left">
-                    left
+                    <i class="fas fa-angle-left"></i>
                   </span>
                 </td>
                 <td>
                   <span class="btn" id="up-arrow" data-arrow="up">
-                    up
+                    <i class="fas fa-angle-up"></i>
                   </span>
                 </td>
                 <td class="sides right-side" rowspan="2">
                   <span class="btn" id="right-arrow" data-arrow="right">
-                    right
+                    <i class="fas fa-angle-right"></i>
                   </span>
                 </td>
                 <td class="sides" rowspan="2">
                   <span class="btn" id="recognize" data-arrow="enter">
-                    detect
+                    <i class="fas fa-camera"></i>
                   </span>
                 </td>
               </tr>
               <tr>
                 <td>
                   <span class="btn" id="down-arrow" data-arrow="down">
-                    down
+                    <i class="fas fa-angle-down"></i>
                   </span>
                 </td>
               </tr>
