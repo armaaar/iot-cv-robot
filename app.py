@@ -8,10 +8,18 @@ from flask import Flask, render_template, Response, request, url_for, jsonify, g
 from camera.camera_pi import Camera
 import smbus
 import time
-
+import sys
+from PIL import Image
+import picamera
+import io
+'''
+camera = picamera.PiCamera()
+camera.resolution = (300, 300)
+camera.framerate = 10
+'''
 bus = smbus.SMBus(1)
 app = Flask(__name__)
-
+frame = 0
 
 @app.route('/')
 def index():
@@ -20,8 +28,14 @@ def index():
 
 def gen(camera):
     """Video streaming generator function."""
+    global frame
     while True:
+        global frame
         frame = camera.get_frame()
+        
+        
+        #curr_frame = frame
+        
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
@@ -81,12 +95,19 @@ def move_robot():
 
     elif move['right']:
         state="Moving: right"
+        #global frame
+        #image = Image.open(io.BytesIO(frame))
+        #image.save('frame','jpeg')
         bus.write_byte_data(0x21, 0x00, 6)
+        #g#lobal curr_frame
+        #img = Image.open(curr_frame)
+        #img.save('frame','png')
+        
 
     else:
         state="Stopped"
-        bus.write_byte_data(0x21, 0x00, 5)
-
+        #bus.write_byte_data(0x21, 0x00, 5)
+        
 
     return jsonify({
         'state': state
@@ -94,15 +115,32 @@ def move_robot():
 
 @app.route('/recognize', methods=['POST'])
 def recognize_picture():
-    state = 'Recognizing...'
+    global first
     
-
-    # DO SOMETHING HERE
-
+    state = 'Recognizing...'
+    global frame
+    image = Image.open(io.BytesIO(frame))
+    image.save('/home/pi/Pics/2','jpeg')
+    sys.stdout.write("qq")
+    sys.stdout.flush()
+    
+    
+    text = ''
+    length = sys.stdin.read(4)
+    sys.stdout.write("ZZzz")
+    sys.stdout.flush()
+    #if length.isdigit() == False:
+    #    length = length[0:2]
+    #print(int(length))
+    sys.stdout.write(str(length))
+    sys.stdout.flush()    
+    rec = sys.stdin.read(int(length))
+    state = rec
+        # DO SOMETHING HERE
     return jsonify({
         'state': state
     })
 
 if __name__ == '__main__':
-    app.debug = True
+    app.debug = False
     app.run(host='0.0.0.0', threaded=True, port=5000)
