@@ -106,7 +106,7 @@ def move_robot():
 
     else:
         state="Stopped"
-        #bus.write_byte_data(0x21, 0x00, 5)
+        bus.write_byte_data(0x21, 0x00, 5)
         
 
     return jsonify({
