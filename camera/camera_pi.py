@@ -10,8 +10,8 @@ class Camera(BaseCamera):
     def frames():
         with picamera.PiCamera() as camera:
             # let camera warm up
-            camera.resolution = (720, 720)
-            camera.framerate = 10
+            camera.resolution = (350, 350)
+            camera.framerate = 15
             time.sleep(2)
 
             stream = io.BytesIO()

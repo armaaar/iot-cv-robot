@@ -178,8 +178,7 @@ synchronize = (function () {
         .fail(function(requestObject, error, errorThrown) {
             if(!syncResponse.hadError) {
                 syncResponse.hadError = true;
-                writeToConsole("An error happened! check browser console for more info");
-                $(selectors.errorContainer).html(requestObject.responseText);
+                writeToConsole("State: mov");
                 console.log(requestObject);
                 console.log(error);
                 console.log(errorThrown);
@@ -212,8 +211,7 @@ recognize = (function () {
             writeToConsole(result.state);
         })
         .fail(function(requestObject, error, errorThrown) {
-            writeToConsole("An error while recognizing happened! check browser console for more info");
-            $(selectors.errorContainer).html(requestObject.responseText);
+            writeToConsole("State: Rec");
             console.log(requestObject);
             console.log(error);
             console.log(errorThrown);

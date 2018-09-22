@@ -92,13 +92,7 @@ def move_robot():
 
     elif move['right']:
         state="Moving: right"
-        #global frame
-        #image = Image.open(io.BytesIO(frame))
-        #image.save('frame','jpeg')
         bus.write_byte_data(0x21, 0x00, 6)
-        #g#lobal curr_frame
-        #img = Image.open(curr_frame)
-        #img.save('frame','png')
         
 
     else:
@@ -113,7 +107,8 @@ def move_robot():
 @app.route('/recognize', methods=['POST'])
 def recognize_picture():
     global first
-    
+    #os.system("./simple_google_tts en  'please wait i am thinking'")
+    os.system("flite -voice kal16 -t  'please wait i am thinking'")
     state = 'Recognizing...'
     global frame
     image = Image.open(io.BytesIO(frame))
@@ -133,7 +128,16 @@ def recognize_picture():
     sys.stdout.flush()    
     rec = sys.stdin.read(int(length))
     state = rec
+    temp = ""
+    for x in state:
+        if x == ',' or x == '(':
+            break
+        else:
+            temp = temp + x
         # DO SOMETHING HERE
+    #temp = "flite -voice kal16 -t " + "' i guess it is" + temp + "'"
+    temp = "flite -voice kal16 -t  " + "' i guess it is" + temp + "'"    
+    os.system(temp)
     return jsonify({
         'state': state
     })
